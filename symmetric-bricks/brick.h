@@ -5,7 +5,7 @@ class Brick
 {
 
 public:
-	Brick();
+	Brick(char);
 	
 	Brick* topNeighbour;
 	Brick* rightNeighbour;

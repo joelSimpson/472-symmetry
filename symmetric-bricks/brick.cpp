@@ -1,8 +1,9 @@
 #include "brick.h"
 
 //Brick constructor
-Brick::Brick()
+Brick::Brick(char colour)
 {
+	this->colour = colour;
 
 }
 
