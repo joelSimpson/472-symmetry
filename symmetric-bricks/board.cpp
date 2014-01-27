@@ -15,14 +15,34 @@ Board::Board(int height, int width, int redCount, int blueCount, int whiteCount)
 	{
 		for(int k = 0; k < width; k++)
 		{
-			//char colour = generateRandomColour(this->redCount, this->blueCount, this->whiteCount);
 			board[i][k] = new Brick('r');
-			/*I'll implement logic to generate our "cyber" board.  Given bricks their proper neighbours so we can move around the board.
-				I'm thinking will have a Board class or maybe just a 2-d array of bricks to represent the board.  I'm leaning towards the class so we can implement some functions on it easily.
-			*/
-
 		}
 	}
+
+	for(int i = 0; i < height; i++)
+	{
+		for(int k = 0; k < width; k++)
+		{
+			if(i > 0){
+				board[i][k]->setTopNeighbour(board[i-1][k]);
+				cout << "board[" << i << "][" << k << "] -- has a TopNeighbour." << endl;
+			}
+			if(k < width-1){
+				board[i][k]->setRightNeighbour(board[i][k+1]);
+				cout << "board[" << i << "][" << k << "] -- has a RightNeighbour." << endl;
+			}
+			if(i < height - 1){
+				board[i][k]->setBottomNeighbour(board[i+1][k]);
+				cout << "board[" << i << "][" << k << "] -- has a BottomNeighbour." << endl;
+			}
+			if(k > 0){
+				board[i][k]->setLeftNeighbour(board[i-1][k]);
+				cout << "board[" << i << "][" << k << "] -- has a LeftNeighbour." << endl;
+			}
+		}
+	}
+
+	
 }
 
 /*
