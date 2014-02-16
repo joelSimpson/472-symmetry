@@ -3,19 +3,16 @@ using namespace std;
 
 #include <stdlib.h>
 #include "board.h"
+#define ARRAY_SIZE(array) (sizeof((array))/sizeof((array[0])))
 
 //Board constructor.  Generate the board structure with bricks knowing who their neighbours are.
-Board::Board(int height, int width, int redCount, int blueCount, int whiteCount)
+Board::Board(string colours, int height, int width)
 {
-	this->redCount = redCount;
-	this->blueCount = blueCount;
-	this->whiteCount = whiteCount;
-
 	for(int i = 0; i < height; i++)
 	{
 		for(int k = 0; k < width; k++)
 		{
-			board[i][k] = new Brick('r');
+			board[i][k] = new Brick(colours[i+k]);
 		}
 	}
 
@@ -23,6 +20,7 @@ Board::Board(int height, int width, int redCount, int blueCount, int whiteCount)
 	{
 		for(int k = 0; k < width; k++)
 		{
+			cout << "board[" << i << "][" << k << "] is : " << board[i][k]->getColour() << endl;
 			if(i > 0){
 				board[i][k]->setTopNeighbour(board[i-1][k]);
 				cout << "board[" << i << "][" << k << "] -- has a TopNeighbour." << endl;
@@ -41,46 +39,4 @@ Board::Board(int height, int width, int redCount, int blueCount, int whiteCount)
 			}
 		}
 	}
-
-	
 }
-
-/*
-char generateRandomColour(int redCount, int blueCount, int whiteCount)
-{
-	int x = (rand() % 2);
-
-	while(true){
-		switch(x)
-		{
-		case 0: 
-			if(redCount > 0){
-				cout << "Red" << endl;
-				redCount--;
-				return 'r';
-			}
-			break;
-		case 1:
-			if(blueCount > 0){
-				cout << "Blue" << endl;
-				blueCount--;
-				return 'b';
-			}
-			break;
-		case 2:
-			if(whiteCount > 0){
-				cout << "White" << endl;
-				whiteCount--;
-				return 'w';
-			}
-			break;
-		default: //This should never happend
-			//cout << "generateRandomColour spat out something bad." << endl;
-				return 'T';
-		}
-
-	}
-	return 'e';//this should never happen either
-}
-*/
-

@@ -7,8 +7,7 @@ class Board
 {
 
 public:
-	Board(int, int, int, int, int);
-	char generateRandomColour(int, int, int);
+	Board(string, int, int);
 	static const int BOARD_HEIGHT = 3;
 	static const int BOARD_WIDTH = 5;
 	
