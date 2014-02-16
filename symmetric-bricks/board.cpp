@@ -3,7 +3,6 @@ using namespace std;
 
 #include <stdlib.h>
 #include "board.h"
-#define ARRAY_SIZE(array) (sizeof((array))/sizeof((array[0])))
 
 //Board constructor.  Generate the board structure with bricks knowing who their neighbours are.
 Board::Board(string colours, int height, int width)
