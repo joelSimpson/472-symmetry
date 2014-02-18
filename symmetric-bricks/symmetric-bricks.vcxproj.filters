@@ -24,18 +24,12 @@
     <ClCompile Include="board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="empty.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="brick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="board.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="empty.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
