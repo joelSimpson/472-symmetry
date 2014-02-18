@@ -19,6 +19,12 @@ public:
 	string currentOutputFile;
 
 	Brick *emptyBrick;
+
+	bool moveUp();
+	bool moveRight();
+	bool moveDown();
+	bool moveLeft();
+	bool isGoalState();
 	
 private:
 	int getState();	//return an integer value of what it's state might be in?  I dunno

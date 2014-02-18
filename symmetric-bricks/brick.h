@@ -23,12 +23,8 @@ public:
 	void setBottomNeighbour(Brick*);
 	void setLeftNeighbour(Brick*);
 
-	void moveUp(Brick*);
-	void moveRight();
-	void moveDown();
-	void moveLeft();
-
 	char getColour();
+	void Brick::setColour(char);
 
 private:
 	char colour;
