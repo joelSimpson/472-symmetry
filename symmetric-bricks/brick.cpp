@@ -4,7 +4,10 @@
 Brick::Brick(char colour)
 {
 	this->colour = colour;
-
+	this->topNeighbour = NULL;
+	this->rightNeighbour = NULL;
+	this->leftNeighbour = NULL;
+	this->topNeighbour = NULL;
 }
 
 //--------------Getters for Bricks
