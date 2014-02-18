@@ -1,8 +1,12 @@
 #include <iostream>
-using namespace std;
-
 #include <stdlib.h>
 #include "board.h"
+#include <string>
+#include<fstream>
+
+
+using namespace std;
+
 
 //Board constructor.  Generate the board structure with bricks knowing who their neighbours are.
 Board::Board(string colours)
@@ -12,6 +16,9 @@ Board::Board(string colours)
 	{
 		for(int k = 0; k <  this->BOARD_WIDTH; k++)
 		{
+			if(colours[count] == ' '){
+				count++;
+			}
 			board[i][k] = new Brick(colours[count]);
 			if(colours[count] == 'e')
 				emptyBrick = board[i][k];//make the moveable brick.
@@ -56,4 +63,19 @@ void Board::drawBoard()
 		}
 		cout << endl;
 	}
+}
+
+void Board::writeToOutput(std::ofstream &output)
+{
+	if(output.is_open())
+	{
+		for(int i = 0; i < this->BOARD_HEIGHT; i++)
+		{
+			for(int k = 0; k < this->BOARD_WIDTH; k++)
+			{
+				output << board[i][k]->getColour();
+			}
+		}
+	}
+
 }
