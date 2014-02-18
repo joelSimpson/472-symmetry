@@ -2,6 +2,8 @@
 #define BOARD_H
 
 #include "brick.h"
+#include <iostream>
+using namespace std;
 
 class Board
 {
@@ -9,9 +11,12 @@ class Board
 public:
 	Board(string);
 	void drawBoard();
+	void writeToOutput(ofstream &);
 
 	static const int BOARD_HEIGHT = 3;
 	static const int BOARD_WIDTH = 5;
+
+	string currentOutputFile;
 
 	Brick *emptyBrick;
 	
