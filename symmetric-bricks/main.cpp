@@ -13,6 +13,9 @@ int main(int argc, char* argv[]) {
 	cout << "This is the current board" << endl;
 	board->drawBoard();
 
+	board->emptyBrick->moveUp(board->emptyBrick);
+	board->drawBoard();
+
 	return 0;
 }
 

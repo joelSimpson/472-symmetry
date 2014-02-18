@@ -1,4 +1,6 @@
 #include "brick.h"
+#include <iostream>
+using namespace std;
 
 //Brick constructor
 Brick::Brick(char colour)
@@ -9,6 +11,45 @@ Brick::Brick(char colour)
 	this->leftNeighbour = NULL;
 	this->topNeighbour = NULL;
 }
+
+//--------------Moving for Bricks
+void Brick::moveUp(Brick* emptyBrick)
+{
+	if(this->getTopNeighbour() != NULL){
+		
+	}else{
+		cout << "Cannot move Up." << endl;
+	}
+	
+}
+
+void Brick::moveRight()
+{
+	if(this->getRightNeighbour() != NULL){
+
+	}else{
+		cout << "Cannot move Right." << endl;
+	}
+}
+
+void Brick::moveDown()
+{
+	if(this->getBottomNeighbour() != NULL){
+
+	}else{
+		cout << "Cannot move Down." << endl;
+	}
+}
+
+void Brick::moveLeft()
+{
+	if(this->getLeftNeighbour() != NULL){
+
+	}else{
+		cout << "Cannot move Left." << endl;
+	}
+}
+//--------------------------------
 
 //--------------Getters for Bricks
 Brick* Brick::getTopNeighbour()

@@ -12,8 +12,10 @@ Board::Board(string colours)
 	{
 		for(int k = 0; k <  this->BOARD_WIDTH; k++)
 		{
-			cout << "New brick with colour:" << colours[i+k] << endl;
 			board[i][k] = new Brick(colours[count]);
+			if(colours[count] == 'e')
+				emptyBrick = board[i][k];//make the moveable brick.
+
 			count++;
 		}
 	}
