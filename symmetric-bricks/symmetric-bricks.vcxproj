@@ -70,7 +70,7 @@
   <ItemGroup>
     <ClInclude Include="board.h" />
     <ClInclude Include="brick.h" />
-    <ClInclude Include="Empty.h" />
+    <ClInclude Include="empty.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

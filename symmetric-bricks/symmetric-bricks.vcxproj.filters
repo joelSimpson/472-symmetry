@@ -35,7 +35,7 @@
     <ClInclude Include="board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Empty.h">
+    <ClInclude Include="empty.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
