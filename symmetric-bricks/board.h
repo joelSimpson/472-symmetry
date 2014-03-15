@@ -25,6 +25,9 @@ public:
 	bool moveDown();
 	bool moveLeft();
 	bool isGoalState();
+
+	//Brick* getAvailableLegalMoves();
+	std::vector <Brick*> getAvailableLegalMoves();
 	
 private:
 	int getState();	//return an integer value of what it's state might be in?  I dunno

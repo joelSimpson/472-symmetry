@@ -2,9 +2,8 @@
 #include <stdlib.h>
 #include "board.h"
 #include <string>
-#include<fstream>
-
-
+#include <fstream>
+#include <vector>
 using namespace std;
 
 
@@ -157,5 +156,22 @@ void Board::writeToOutput(std::ofstream &output)
 		}
 		output << "\n";
 	}
+}
 
+std::vector <Brick*> Board::getAvailableLegalMoves() 
+{
+    std::vector<Brick*> legalMoves;
+	if(emptyBrick->getTopNeighbour()){
+		legalMoves.push_back(emptyBrick->getTopNeighbour());
+	}
+	if(emptyBrick->getRightNeighbour()){
+		legalMoves.push_back(emptyBrick->getRightNeighbour());
+	}
+	if(emptyBrick->getBottomNeighbour()){
+		legalMoves.push_back(emptyBrick->getBottomNeighbour());
+	}
+	if(emptyBrick->getLeftNeighbour()){
+		legalMoves.push_back(emptyBrick->getLeftNeighbour());
+	}
+    return legalMoves;
 }
