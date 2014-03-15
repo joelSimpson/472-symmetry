@@ -25,13 +25,14 @@ public:
 
 	char getColour();
 	void Brick::setColour(char);
+	
+	bool visited;
 
 private:
 	char colour;
+
 	
 
 };
-
-
 
 #endif //BRICK_H

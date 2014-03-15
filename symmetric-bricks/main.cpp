@@ -4,12 +4,18 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+#include <stack>
 
 using namespace std;
 
 const string file1 = "../test1";
+const int MAX_DEPTH = 2;
 
 void menuMove(Board* board);
+void startTraverse(Board* board, int depth);
+void traverse(Board* board, int depth, std::stack<std::vector<Brick*>> moves);
+void cleanVisitedBricks(std::vector<Brick*> bricks);
 
 int main(int argc, char* argv[]) {
 	cout << "Reading from file: " << file1 << endl;
@@ -28,7 +34,10 @@ int main(int argc, char* argv[]) {
 			board->drawBoard();
 
 			//Prompt for moving
-			menuMove(board);
+			//menuMove(board);
+
+			//Replacing menuMove.
+			startTraverse(board, MAX_DEPTH);
 
 			//TODO: Move the close outside the while for a complete read of file
 			input.close();//Force close reading so we only read first line.. for now.
@@ -42,11 +51,55 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
+void startTraverse(Board* board, int depth)
+{
+	ofstream output(board->currentOutputFile);
+	//Currently just goes to n'th depth.
+	while(!board->isGoalState())
+	{
+		std::stack<std::vector<Brick*>> moves;
+		traverse(board, depth, moves);
+	}
+	output.close();
+
+	cout << "Made it to a goal state!" << endl;
+}
+
+void traverse(Board* board, int depth, std::stack<std::vector<Brick*>> moves)
+{
+	std::vector<Brick*> availablesMoves = board->getAvailableLegalMoves();//Get's array of possible moves given current emptyBrick spot.
+	moves.push(board->getAvailableLegalMoves());//Get's array of possible moves given current emptyBrick spot.
+	vector<Brick*> visitedBricks;	
+	for(std::vector<Brick*>::iterator it = availablesMoves.begin(); it != availablesMoves.end(); ++it) { //For each possible move
+			board->move(*it);
+			(*it)->visited = true;
+			visitedBricks.push_back((*it));
+			
+			if(depth > 0){
+				startTraverse(board, depth-1);
+			}else{
+				//Got to the furthest leaf. 
+				board->drawBoard();
+				board->drawVisited();
+				system("pause");
+				cleanVisitedBricks(visitedBricks);
+				//Need to reset back to the initial position
+			}
+		}
+}
+
+void cleanVisitedBricks(std::vector<Brick*> bricks)
+{
+	for(std::vector<Brick*>::iterator it = bricks.begin(); it != bricks.end(); ++it) { //For each possible move
+		(*it)->visited = false;
+	}
+	bricks.erase (bricks.begin(),bricks.end());
+}
+
 void menuMove(Board* board)
 {
 	bool active = true;
 	ofstream output(board->currentOutputFile);
-
 	while (active)
 	{
 		bool movement_status = false;

@@ -3,6 +3,8 @@
 
 #include "brick.h"
 #include <iostream>
+#include <vector>
+
 using namespace std;
 
 class Board
@@ -11,6 +13,7 @@ class Board
 public:
 	Board(string);
 	void drawBoard();
+	void drawVisited();
 	void writeToOutput(ofstream &);
 
 	static const int BOARD_HEIGHT = 3;
@@ -24,10 +27,11 @@ public:
 	bool moveRight();
 	bool moveDown();
 	bool moveLeft();
-	bool isGoalState();
 
-	//Brick* getAvailableLegalMoves();
-	std::vector <Brick*> getAvailableLegalMoves();
+	bool move(Brick*);//move empty brick to passed brick.  returns false if they aren't neighbours.
+
+	bool isGoalState();
+	vector<Brick*> getAvailableLegalMoves();
 	
 private:
 	int getState();	//return an integer value of what it's state might be in?  I dunno

@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+
 using namespace std;
 
 
@@ -141,6 +142,20 @@ void Board::drawBoard()
 		}
 		cout << endl;
 	}
+	cout << "=========" <<endl;
+}
+
+void Board::drawVisited()
+{
+	for(int i = 0; i < this->BOARD_HEIGHT; i++)
+	{
+		for(int k = 0; k < this->BOARD_WIDTH; k++)
+		{
+			cout << board[i][k]->visited << " ";
+		}
+		cout << endl;
+	}
+	cout << "=========" <<endl;
 }
 
 void Board::writeToOutput(std::ofstream &output)
@@ -158,20 +173,36 @@ void Board::writeToOutput(std::ofstream &output)
 	}
 }
 
-std::vector <Brick*> Board::getAvailableLegalMoves() 
+vector<Brick*> Board::getAvailableLegalMoves() 
 {
-    std::vector<Brick*> legalMoves;
-	if(emptyBrick->getTopNeighbour()){
+    vector<Brick*> legalMoves;
+
+	if(emptyBrick->getTopNeighbour() != NULL && emptyBrick->getTopNeighbour()->visited == false){
 		legalMoves.push_back(emptyBrick->getTopNeighbour());
 	}
-	if(emptyBrick->getRightNeighbour()){
+	if(emptyBrick->getRightNeighbour() != NULL && emptyBrick->getRightNeighbour()->visited == false){
 		legalMoves.push_back(emptyBrick->getRightNeighbour());
 	}
-	if(emptyBrick->getBottomNeighbour()){
+	if(emptyBrick->getBottomNeighbour() != NULL && emptyBrick->getBottomNeighbour()->visited == false){
 		legalMoves.push_back(emptyBrick->getBottomNeighbour());
 	}
-	if(emptyBrick->getLeftNeighbour()){
+	if(emptyBrick->getLeftNeighbour() != NULL && emptyBrick->getLeftNeighbour()->visited == false){
 		legalMoves.push_back(emptyBrick->getLeftNeighbour());
 	}
-    return legalMoves;
+	
+	return legalMoves;
+}
+
+bool Board::move(Brick* newPosition)
+{
+	if(emptyBrick->getTopNeighbour() == newPosition){
+		return moveUp();
+	} else if (emptyBrick->getRightNeighbour() == newPosition){
+		return moveRight();
+	} else if (emptyBrick->getBottomNeighbour() == newPosition){
+		return moveDown();
+	} else if (emptyBrick->getLeftNeighbour() == newPosition){
+		return moveLeft();
+	}
+	return false;
 }

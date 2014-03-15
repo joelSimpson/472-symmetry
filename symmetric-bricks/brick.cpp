@@ -6,6 +6,7 @@ using namespace std;
 Brick::Brick(char colour)
 {
 	this->colour = colour;
+	this->visited = false;
 	this->topNeighbour = NULL;
 	this->rightNeighbour = NULL;
 	this->leftNeighbour = NULL;
