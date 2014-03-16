@@ -55,7 +55,6 @@ Board::Board(string colours)
 //--------------Moving for Bricks
 bool Board::moveUp()
 {
-	cout << "Moving up!" << endl;
 	Brick *top = emptyBrick->getTopNeighbour();
 
 	if(top == NULL)
@@ -72,7 +71,6 @@ bool Board::moveUp()
 
 bool Board::moveRight()
 {
-	cout << "Moving right!" << endl;
 	Brick *right = emptyBrick->getRightNeighbour();
 
 	if(right == NULL)
@@ -89,7 +87,6 @@ bool Board::moveRight()
 
 bool Board::moveDown()
 {
-	cout << "Moving down!" << endl;
 	Brick *down = emptyBrick->getBottomNeighbour();
 
 	if(down == NULL)
@@ -106,7 +103,6 @@ bool Board::moveDown()
 
 bool Board::moveLeft()
 {
-	cout << "Moving left!" << endl;
 	Brick *left = emptyBrick->getLeftNeighbour();
 
 	if(left == NULL)
@@ -147,6 +143,7 @@ void Board::drawBoard()
 		cout << endl;
 	}
 	cout << "=========" <<endl;
+	std::system("pause");
 }
 
 void Board::drawVisited()
