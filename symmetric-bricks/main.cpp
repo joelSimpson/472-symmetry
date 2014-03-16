@@ -97,6 +97,7 @@ void startTraverse(Board* board)
 						Brick* previous5 = board->emptyBrick;
 						if((*it5) != previous5){
 							board->move(*it5);
+							//At this point, the emptyBrick is at a leaf node.
 							board->drawBoard();
 							board->move(previous5);
 						}else{
