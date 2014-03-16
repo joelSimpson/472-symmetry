@@ -14,6 +14,7 @@ public:
 	Board(string);
 	void drawBoard();
 	void drawVisited();
+	void cleanVisited();
 	void writeToOutput(ofstream &);
 
 	static const int BOARD_HEIGHT = 3;

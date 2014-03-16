@@ -10,11 +10,11 @@
 using namespace std;
 
 const string file1 = "../test1";
-const int MAX_DEPTH = 2;
+const int MAX_DEPTH = 5;
 
 void menuMove(Board* board);
-void startTraverse(Board* board, int depth);
-void traverse(Board* board, int depth, std::stack<std::vector<Brick*>> moves);
+void startTraverse(Board* board);
+void traverse(Board* board, int depth, std::vector<Brick*> moves, Brick* previous);
 void cleanVisitedBricks(std::vector<Brick*> bricks);
 
 int main(int argc, char* argv[]) {
@@ -31,13 +31,12 @@ int main(int argc, char* argv[]) {
 
 			Board *board = new Board(inputString);
 			board->currentOutputFile = file1 + "OUTPUT.txt";
-			board->drawBoard();
 
 			//Prompt for moving
 			//menuMove(board);
 
 			//Replacing menuMove.
-			startTraverse(board, MAX_DEPTH);
+			startTraverse(board);
 
 			//TODO: Move the close outside the while for a complete read of file
 			input.close();//Force close reading so we only read first line.. for now.
@@ -51,49 +50,84 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
-void startTraverse(Board* board, int depth)
+void startTraverse(Board* board)
 {
 	ofstream output(board->currentOutputFile);
-	//Currently just goes to n'th depth.
-	while(!board->isGoalState())
+
+	std::vector<Brick*> availablesMoves = board->getAvailableLegalMoves();//Get 4 moves
+	for(std::vector<Brick*>::iterator it = availablesMoves.begin(); it != availablesMoves.end(); ++it)
 	{
-		std::stack<std::vector<Brick*>> moves;
-		traverse(board, depth, moves);
+		for(int i = 0; i < MAX_DEPTH; i++)//Until max depth
+		{
+			Brick* previous = board->emptyBrick;
+			board->move(*it);//move
+
+			std::stack<std::vector<Brick*>> moreMoves;
+			moreMoves.push(board->getAvailableLegalMoves());
+
+			for(std::vector<Brick*>::iterator itt = moreMoves.top().begin(); itt != moreMoves.top().end(); ++itt)//get moves
+			{
+				cout << "We now have:" << moreMoves.size() << " moves available" << endl;
+				if((*itt) != previous){
+					board->move(*itt);
+					moreMoves.push(board->getAvailableLegalMoves());//This doesn't work because there's no way to.. "refresh" the data held in the for loop.
+					board->drawBoard();
+					system("pause");
+				}
+					
+			
+				//}
+			}
+			
+		}
 	}
+	//Currently just goes to n'th depth.
+	//while(!board->isGoalState())
+	//{
+		//traverse(board, depth, board->getAvailableLegalMoves(), board->emptyBrick);
+	//}
 	output.close();
 
 	cout << "Made it to a goal state!" << endl;
 }
 
-void traverse(Board* board, int depth, std::stack<std::vector<Brick*>> moves)
+void traverse(Board* board, int depth, std::vector<Brick*> moves, Brick* previous)
 {
-	std::vector<Brick*> availablesMoves = board->getAvailableLegalMoves();//Get's array of possible moves given current emptyBrick spot.
-	moves.push(board->getAvailableLegalMoves());//Get's array of possible moves given current emptyBrick spot.
-	vector<Brick*> visitedBricks;	
-	for(std::vector<Brick*>::iterator it = availablesMoves.begin(); it != availablesMoves.end(); ++it) { //For each possible move
-			board->move(*it);
-			(*it)->visited = true;
-			visitedBricks.push_back((*it));
-			
-			if(depth > 0){
-				startTraverse(board, depth-1);
-			}else{
-				//Got to the furthest leaf. 
-				board->drawBoard();
-				board->drawVisited();
-				system("pause");
-				cleanVisitedBricks(visitedBricks);
-				//Need to reset back to the initial position
-			}
-		}
-}
+	//std::vector<Brick*> availablesMoves = board->getAvailableLegalMoves();//Get's array of possible moves given current emptyBrick spot.
+	//moves.push(board->getAvailableLegalMoves());//Get's array of possible moves given current emptyBrick spot.
 
-void cleanVisitedBricks(std::vector<Brick*> bricks)
-{
-	for(std::vector<Brick*>::iterator it = bricks.begin(); it != bricks.end(); ++it) { //For each possible move
-		(*it)->visited = false;
+	vector<Brick*> visitedBricks;
+	for(std::vector<Brick*>::iterator it = moves.begin(); it != moves.end(); ++it) { //For each possible move
+		if((*it) == previous){
+
+			break;
+		}
+		previous = board->emptyBrick;
+		board->move(*it);
+		board->drawBoard();
+		//(*it)->visited = true;
+		//visitedBricks.push_back((*it));
+			
+		if(depth > 0){
+			cout << "CALLING TRAVERSE" << endl;
+			//moves.push(board->getAvailableLegalMoves());//Get's array of possible moves given current emptyBrick spot.
+			traverse(board, depth-1, board->getAvailableLegalMoves(), previous);
+		}else{
+			//Got to the furthest leaf.
+			//board->drawBoard();
+			//system("pause");
+			//Need to reset back to the initial position
+			//(*it)->visited = false;
+			//board->move(previous);
+			//board->drawBoard();
+			//
+		}
+		
+		system("pause");	
 	}
-	bricks.erase (bricks.begin(),bricks.end());
+
+
+	//system("pause");
 }
 
 void menuMove(Board* board)

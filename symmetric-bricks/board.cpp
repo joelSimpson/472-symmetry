@@ -55,6 +55,7 @@ Board::Board(string colours)
 //--------------Moving for Bricks
 bool Board::moveUp()
 {
+	cout << "Moving up!" << endl;
 	Brick *top = emptyBrick->getTopNeighbour();
 
 	if(top == NULL)
@@ -71,6 +72,7 @@ bool Board::moveUp()
 
 bool Board::moveRight()
 {
+	cout << "Moving right!" << endl;
 	Brick *right = emptyBrick->getRightNeighbour();
 
 	if(right == NULL)
@@ -87,6 +89,7 @@ bool Board::moveRight()
 
 bool Board::moveDown()
 {
+	cout << "Moving down!" << endl;
 	Brick *down = emptyBrick->getBottomNeighbour();
 
 	if(down == NULL)
@@ -103,6 +106,7 @@ bool Board::moveDown()
 
 bool Board::moveLeft()
 {
+	cout << "Moving left!" << endl;
 	Brick *left = emptyBrick->getLeftNeighbour();
 
 	if(left == NULL)
@@ -158,6 +162,17 @@ void Board::drawVisited()
 	cout << "=========" <<endl;
 }
 
+void Board::cleanVisited()
+{
+	for(int i = 0; i < this->BOARD_HEIGHT; i++)
+	{
+		for(int k = 0; k < this->BOARD_WIDTH; k++)
+		{
+			board[i][k]->visited = false;
+		}
+	}
+}
+
 void Board::writeToOutput(std::ofstream &output)
 {
 	if(output.is_open())
@@ -189,7 +204,8 @@ vector<Brick*> Board::getAvailableLegalMoves()
 	if(emptyBrick->getLeftNeighbour() != NULL && emptyBrick->getLeftNeighbour()->visited == false){
 		legalMoves.push_back(emptyBrick->getLeftNeighbour());
 	}
-	
+
+	cout << "# of legal moves " << legalMoves.size() << endl;
 	return legalMoves;
 }
 
