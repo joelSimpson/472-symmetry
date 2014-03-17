@@ -4,34 +4,46 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdio>
+#include <ctime>
 
 using namespace std;
 
 const string file1 = "../test1";
+const string OUTPUT_FILE = "../OUTPUT.txt";
 
-void menuMove(Board* board);
+void menuMove(Board* board, ofstream& output);
 
 int main(int argc, char* argv[]) {
 	cout << "Reading from file: " << file1 << endl;
 
 	string inputString;
 	ifstream input(file1+".txt");
+
 	if(input.is_open()){
 		while(getline (input, inputString))
 		{
-			//inputString.append(inputString);
-			
 			cout << "I read this line: " << inputString << endl;
-
 			Board *board = new Board(inputString);
-			board->currentOutputFile = file1 + "OUTPUT.txt";
+
+			ofstream output(OUTPUT_FILE);
 			board->drawBoard();
 
-			//Prompt for moving
-			menuMove(board);
+			//Start Timer
+			std::clock_t start;
+			double duration;
+			start = std::clock();
 
+			//Prompt for moving
+			menuMove(board, output);
+
+			//Stop Timer
+			duration = ( std::clock() - start );
+			output << "Time taken to solve: " << duration << "ms.\n";
+			output << board->totalMoves << " total moves taken to solve puzzle.\n";
 			//TODO: Move the close outside the while for a complete read of file
 			input.close();//Force close reading so we only read first line.. for now.
+			output.close();
 		}
 		
 	}else{
@@ -42,10 +54,9 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
-void menuMove(Board* board)
+void menuMove(Board* board, std::ofstream& output)
 {
 	bool active = true;
-	ofstream output(board->currentOutputFile);
 
 	while (active)
 	{
@@ -83,8 +94,6 @@ void menuMove(Board* board)
 		if(movement_status)
 			board->writeToOutput(output);
 	}
-
-	output.close();
 }
 
 

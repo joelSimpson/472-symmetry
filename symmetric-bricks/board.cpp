@@ -50,6 +50,7 @@ Board::Board(string colours)
 			}
 		}
 	}
+	this->totalMoves = 0;
 }
 
 //--------------Moving for Bricks
@@ -156,6 +157,7 @@ void Board::writeToOutput(std::ofstream &output)
 			}
 		}
 		output << "\n";
+		this->totalMoves++;
 	}
 
 }
