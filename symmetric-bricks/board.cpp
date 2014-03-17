@@ -161,10 +161,29 @@ int Board::heuristic2()
 	{
 		if(board[0][col]->getColour() != board[this->BOARD_HEIGHT-1][col]->getColour())
 		{
-			value++;
+			value += 2;
+			value += findClosestSameColourBrick(this->BOARD_HEIGHT-1, col);
 		}
 	}
 	return value;
+}
+
+int Board::findClosestSameColourBrick(int x, int y)
+{
+	int shortest = 7; //furthest away it can be.
+	for(int col = 0; col <  this->BOARD_WIDTH; col++)
+	{
+		for(int row = 0; row <  this->BOARD_HEIGHT; row++)
+		{
+			if(board[row][col]->getColour() == board[x][y]->getColour())//Same color as one we're looking for?
+			{
+				if(shortest > abs( (y - col) + (x - row))){
+					shortest = abs( (y - col) + (x - row));
+				}
+			}
+		}
+	}
+	return shortest;
 }
 
 //Draw the current board.
