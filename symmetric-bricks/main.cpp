@@ -1,5 +1,6 @@
 #include "brick.h"
 #include "board.h"
+#include "node.h"
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -26,6 +27,23 @@ int main(int argc, char* argv[]) {
 			Board *board = new Board(inputString);
 			board->currentOutputFile = file1 + "OUTPUT.txt";
 			board->drawBoard();
+			cout << "\n\nRoot of tree\n\n";
+			Node *treeRoot = new Node(board);
+			treeRoot->generateTree(1, 3);
+			treeRoot->data->drawBoard();
+
+			for(vector<Node*>::iterator currentNode = treeRoot->children.begin(); currentNode != treeRoot->children.end(); currentNode++)
+			{
+				cout << "\nChildren in level 1\n";
+
+				(*currentNode)->data->drawBoard();
+
+				for(vector<Node*>::iterator currentNode2 = (*currentNode)->children.begin(); currentNode2 != (*currentNode)->children.end(); currentNode2++)
+				{
+					cout << "\nChildren in level 2\n";
+					(*currentNode2)->data->drawBoard();
+				}
+			} 
 
 			//Prompt for moving
 			menuMove(board);
