@@ -12,6 +12,9 @@ public:
 	Board(string);
 	void drawBoard();
 	void writeToOutput(ofstream &);
+	int heuristic1();
+	int heuristic2();
+	int findClosestSameColourBrick(int x, int y);
 
 	static const int BOARD_HEIGHT = 3;
 	static const int BOARD_WIDTH = 5;

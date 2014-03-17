@@ -142,6 +142,8 @@ int main(int argc, char* argv[]) {
 			duration = ( std::clock() - start );
 			output << "Time taken to solve: " << duration << "ms.\n";
 			output << board->totalMoves << " total moves taken to solve puzzle.\n";
+
+
 			//TODO: Move the close outside the while for a complete read of file
 			input.close();//Force close reading so we only read first line.. for now.
 			output.close();

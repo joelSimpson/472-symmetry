@@ -132,6 +132,60 @@ bool Board::isGoalState()
 	return true;
 }
 
+int Board::heuristic1()
+{
+	int value = 0;
+	if(this->isGoalState()){
+		return 0;
+	}
+
+	for(int col = 0; col <  this->BOARD_WIDTH; col++)
+	{
+		if(board[0][col]->getColour() != board[this->BOARD_HEIGHT-1][col]->getColour())
+		{
+			value++;
+		}
+	}
+	return value;
+}
+
+int Board::heuristic2()
+{
+	//Under construction!
+	int value = 0;
+	if(this->isGoalState()){
+		return 0;
+	}
+
+	for(int col = 0; col <  this->BOARD_WIDTH; col++)
+	{
+		if(board[0][col]->getColour() != board[this->BOARD_HEIGHT-1][col]->getColour())
+		{
+			value += 2;
+			value += findClosestSameColourBrick(this->BOARD_HEIGHT-1, col);
+		}
+	}
+	return value;
+}
+
+int Board::findClosestSameColourBrick(int x, int y)
+{
+	int shortest = 7; //furthest away it can be.
+	for(int col = 0; col <  this->BOARD_WIDTH; col++)
+	{
+		for(int row = 0; row <  this->BOARD_HEIGHT; row++)
+		{
+			if(board[row][col]->getColour() == board[x][y]->getColour())//Same color as one we're looking for?
+			{
+				if(shortest > abs( (y - col) + (x - row))){
+					shortest = abs( (y - col) + (x - row));
+				}
+			}
+		}
+	}
+	return shortest;
+}
+
 //Draw the current board.
 void Board::drawBoard()
 {
