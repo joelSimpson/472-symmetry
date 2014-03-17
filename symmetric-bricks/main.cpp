@@ -7,6 +7,7 @@
 #include <string>
 #include <cstdio>
 #include <ctime>
+#include <limits>
 
 using namespace std;
 
@@ -14,6 +15,88 @@ const string file1 = "../test1";
 const string OUTPUT_FILE = "../OUTPUT.txt";
 
 void menuMove(Board* board, ofstream& output);
+
+//Using a star to search through the tree
+//Returns the path as a vector
+//Pop the vector for the first node in the path
+vector<Node*> Astar(Node *root)
+{
+	vector<Node*> openList;
+	vector<Node*> closeList;
+	vector<Node*> path;
+	
+	//Push start node into open list
+	openList.push_back(root);
+	
+	while(openList.size() > 0)
+	{
+		int min_f = numeric_limits<int>::max();
+		Node *bestnode = NULL;
+		int index = -1;
+
+		//Get optimal node in open list
+		for (int i = 0; i < openList.size(); i++)
+		{
+			Node *currentNode = openList[i];
+			int f = 1 + currentNode->getHeuristic1();
+			int estimate = currentNode->g_cost_so_far + f;
+			if(estimate < min_f)
+			{
+				min_f = estimate;
+				bestnode = currentNode;
+				index = i + 1;
+			}
+		}
+
+		//Goal state found, we return the reconstructed path
+		if(bestnode->data->isGoalState())
+		{
+			Node *currentPathNode = bestnode;
+			path.push_back(currentPathNode);
+			while (currentPathNode->parent != NULL)
+			{
+				currentPathNode = currentPathNode->parent;
+				path.push_back(currentPathNode);
+			}
+			return path;
+		}
+
+		openList.erase(openList.begin() + index);
+		closeList.push_back(bestnode);
+
+		vector<Node*> neighbors = bestnode->children;
+		for (int i = 0; i < neighbors.size(); i++)
+		{
+			Node *currentNeighbor = neighbors[i];
+
+			//If node is already on the closed list skip the node
+			if(find(closeList.begin(), closeList.end(), currentNeighbor) != closeList.end())
+			{
+				continue;
+			}
+
+			int g_cost = bestnode->g_cost_so_far + 1;
+
+			//Check if the neighbor is not already on the open list
+			bool notOpened = find(openList.begin(), openList.end(), currentNeighbor) == openList.end();
+
+			if(notOpened || g_cost < currentNeighbor->g_cost_so_far)
+			{
+				currentNeighbor->parent = bestnode;
+				currentNeighbor->g_cost_so_far = g_cost;
+
+				if(notOpened)
+				{
+					openList.push_back(currentNeighbor);
+				}
+			}
+		}
+	}
+
+	//Return optimal path without finding the goal state
+	//This is the worst case and would be equivalent to Dijkstra's algorithm
+	return path;
+}
 
 int main(int argc, char* argv[]) {
 	cout << "Reading from file: " << file1 << endl;

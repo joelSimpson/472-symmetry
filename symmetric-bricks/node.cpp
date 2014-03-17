@@ -4,11 +4,21 @@ using namespace std;
 Node::Node()
 {
 	data = NULL;
+	parent = NULL;
+	g_cost_so_far = 0;
 }
 
 Node::Node(Board *currentBoard)
 {
 	data = currentBoard;
+	parent = NULL;
+	g_cost_so_far = 0;
+}
+
+int Node::getHeuristic1()
+{
+	return 1;
+	//return this->data->getHeuristic1();
 }
 
 //Generate the possible moves as children
