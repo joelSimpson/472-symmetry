@@ -71,6 +71,7 @@ vector<Node*> a_star(Node *root)
 		openList.erase(openList.begin() + index);
 		closeList.push_back(bestnode);
 
+		bestnode->generateChildrens();
 		vector<Node*> neighbors = bestnode->children;
 		for (int i = 0; i < neighbors.size(); i++)
 		{
@@ -124,9 +125,9 @@ int main(int argc, char* argv[]) {
 			std::clock_t start;
 			double duration;
 			start = std::clock();
-			int depth = 9;
+			int depth = 20;
 			Node *treeRoot = new Node(board);
-			treeRoot->generateTree(1, depth);
+			//treeRoot->generateTree(1, depth);
 			bool goal_found = false;
 
 			while(!goal_found)
@@ -140,10 +141,10 @@ int main(int argc, char* argv[]) {
 					currentNode = optimal_path.back();
 					cout << "\nMove #" << i;
 
-					if(i == optimal_path.size() - 1 && currentNode->data->isGoalState())
+					if(i == initial_size - 1 && currentNode->data->isGoalState())
 					{
-						cout << " (GOAL)";
 						goal_found = true;
+						cout << " (GOAL)";
 					}
 
 					cout << "\n-----------------\n";
@@ -151,17 +152,7 @@ int main(int argc, char* argv[]) {
 					currentNode->data->drawBoard();
 					optimal_path.pop_back();
 				}
-
-				//If goal was not found generate new tree and continue search
-				if(!goal_found)
-				{
-					//TODO: maybe try delete old tree and create new Node then create a tree. For efficiency nd testing
-					currentNode->generateTree(1, depth);
-					treeRoot = currentNode;
-					cout << "\ncontinue...\n";
-					string input;
-					cin >> input;
-				}
+				cout << ( std::clock() - start ) << " ms";
 			}
 
 			//TODO: Remove the manual moving for deliverable 2, 3
@@ -169,9 +160,9 @@ int main(int argc, char* argv[]) {
 			menuMove(board, output);
 
 			//Stop Timer
-			duration = ( std::clock() - start );
-			output << "Time taken to solve: " << duration << "ms.\n";
-			output << board->totalMoves << " total moves taken to solve puzzle.\n";
+			//duration = ( std::clock() - start );
+			//output << "Time taken to solve: " << duration << "ms.\n";
+			//output << board->totalMoves << " total moves taken to solve puzzle.\n";
 
 
 			//TODO: Move the close outside the while for a complete read of file
