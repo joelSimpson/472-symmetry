@@ -15,7 +15,7 @@ public:
 
 	static const int BOARD_HEIGHT = 3;
 	static const int BOARD_WIDTH = 5;
-
+	int totalMoves;
 	string currentOutputFile;
 
 	Brick *emptyBrick;
