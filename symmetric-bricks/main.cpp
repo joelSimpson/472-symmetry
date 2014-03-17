@@ -16,49 +16,56 @@ const string OUTPUT_FILE = "../OUTPUT.txt";
 
 void menuMove(Board* board, ofstream& output);
 
+vector<Node*> reconstruct_path(Node *node)
+{
+	vector<Node*> path;
+	Node *currentPathNode = node;
+	path.push_back(currentPathNode);
+
+	while (currentPathNode->parent != NULL)
+	{
+		currentPathNode = currentPathNode->parent;
+		path.push_back(currentPathNode);
+	}
+	return path;
+}
+
 //Using a star to search through the tree
 //Returns the path as a vector
 //Pop the vector for the first node in the path
-vector<Node*> Astar(Node *root)
+vector<Node*> a_star(Node *root)
 {
 	vector<Node*> openList;
 	vector<Node*> closeList;
 	vector<Node*> path;
-	
+	Node *bestnode = NULL;
+
 	//Push start node into open list
 	openList.push_back(root);
 	
 	while(openList.size() > 0)
 	{
 		int min_f = numeric_limits<int>::max();
-		Node *bestnode = NULL;
 		int index = -1;
-
+		bestnode = NULL;
 		//Get optimal node in open list
 		for (int i = 0; i < openList.size(); i++)
 		{
 			Node *currentNode = openList[i];
-			int f = 1 + currentNode->getHeuristic1();
+			int f = 1 + currentNode->getHeuristic2();
 			int estimate = currentNode->g_cost_so_far + f;
 			if(estimate < min_f)
 			{
 				min_f = estimate;
 				bestnode = currentNode;
-				index = i + 1;
+				index = i;
 			}
 		}
 
 		//Goal state found, we return the reconstructed path
 		if(bestnode->data->isGoalState())
 		{
-			Node *currentPathNode = bestnode;
-			path.push_back(currentPathNode);
-			while (currentPathNode->parent != NULL)
-			{
-				currentPathNode = currentPathNode->parent;
-				path.push_back(currentPathNode);
-			}
-			return path;
+			return reconstruct_path(bestnode);
 		}
 
 		openList.erase(openList.begin() + index);
@@ -95,7 +102,7 @@ vector<Node*> Astar(Node *root)
 
 	//Return optimal path without finding the goal state
 	//This is the worst case and would be equivalent to Dijkstra's algorithm
-	return path;
+	return reconstruct_path(bestnode);
 }
 
 int main(int argc, char* argv[]) {
@@ -112,29 +119,52 @@ int main(int argc, char* argv[]) {
 
 			ofstream output(OUTPUT_FILE);
 			board->drawBoard();
-			cout << "\n\nRoot of tree\n\n";
-			Node *treeRoot = new Node(board);
-			treeRoot->generateTree(1, 3);
-			treeRoot->data->drawBoard();
-
-			for(vector<Node*>::iterator currentNode = treeRoot->children.begin(); currentNode != treeRoot->children.end(); currentNode++)
-			{
-				cout << "\nChildren in level 1\n";
-
-				(*currentNode)->data->drawBoard();
-
-				for(vector<Node*>::iterator currentNode2 = (*currentNode)->children.begin(); currentNode2 != (*currentNode)->children.end(); currentNode2++)
-				{
-					cout << "\nChildren in level 2\n";
-					(*currentNode2)->data->drawBoard();
-				}
-			} 
 
 			//Start Timer
 			std::clock_t start;
 			double duration;
 			start = std::clock();
+			int depth = 9;
+			Node *treeRoot = new Node(board);
+			treeRoot->generateTree(1, depth);
+			bool goal_found = false;
 
+			while(!goal_found)
+			{
+				vector<Node*> optimal_path = a_star(treeRoot);
+				int initial_size = optimal_path.size();
+				Node *currentNode;
+				//Print the path
+				for (int i = 0; i < initial_size; i++)
+				{
+					currentNode = optimal_path.back();
+					cout << "\nMove #" << i;
+
+					if(i == optimal_path.size() - 1 && currentNode->data->isGoalState())
+					{
+						cout << " (GOAL)";
+						goal_found = true;
+					}
+
+					cout << "\n-----------------\n";
+				
+					currentNode->data->drawBoard();
+					optimal_path.pop_back();
+				}
+
+				//If goal was not found generate new tree and continue search
+				if(!goal_found)
+				{
+					//TODO: maybe try delete old tree and create new Node then create a tree. For efficiency nd testing
+					currentNode->generateTree(1, depth);
+					treeRoot = currentNode;
+					cout << "\ncontinue...\n";
+					string input;
+					cin >> input;
+				}
+			}
+
+			//TODO: Remove the manual moving for deliverable 2, 3
 			//Prompt for moving
 			menuMove(board, output);
 

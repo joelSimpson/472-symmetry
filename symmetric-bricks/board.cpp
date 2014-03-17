@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include "board.h"
 #include <string>
-#include<fstream>
+#include <fstream>
+#include <limits>
 
 
 using namespace std;
@@ -170,15 +171,15 @@ int Board::heuristic2()
 
 int Board::findClosestSameColourBrick(int x, int y)
 {
-	int shortest = 7; //furthest away it can be.
+	int shortest = numeric_limits<int>::max(); //furthest away it can be.
 	for(int col = 0; col <  this->BOARD_WIDTH; col++)
 	{
 		for(int row = 0; row <  this->BOARD_HEIGHT; row++)
 		{
 			if(board[row][col]->getColour() == board[x][y]->getColour())//Same color as one we're looking for?
 			{
-				if(shortest > abs( (y - col) + (x - row))){
-					shortest = abs( (y - col) + (x - row));
+				if(shortest > abs( sqrt(y - col) + sqrt(x - row))){
+					shortest = abs( sqrt(y - col) + sqrt(x - row));
 				}
 			}
 		}

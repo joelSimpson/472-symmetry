@@ -16,8 +16,10 @@ class Node
 		vector<Node*> children;
 		Node *parent;
 		int g_cost_so_far;
+		int h_cost;
 
 		int getHeuristic1();
+		int getHeuristic2();
 		void generateChildrens();
 		void generateTree(int currentDepth, int depth);
 };
