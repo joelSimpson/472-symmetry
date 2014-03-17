@@ -31,22 +31,22 @@ Board::Board(string colours)
 	{
 		for(int k = 0; k <  this->BOARD_WIDTH; k++)
 		{
-			cout << "board[" << i << "][" << k << "] is : " << board[i][k]->getColour() << endl;
+			//cout << "board[" << i << "][" << k << "] is : " << board[i][k]->getColour() << endl;
 			if(i > 0){
 				board[i][k]->setTopNeighbour(board[i - 1][k]);
-				cout << "board[" << i << "][" << k << "] -- has a TopNeighbour." << endl;
+				//cout << "board[" << i << "][" << k << "] -- has a TopNeighbour." << endl;
 			}
 			if(k <  this->BOARD_WIDTH - 1){
 				board[i][k]->setRightNeighbour(board[i][k + 1]);
-				cout << "board[" << i << "][" << k << "] -- has a RightNeighbour." << endl;
+				//cout << "board[" << i << "][" << k << "] -- has a RightNeighbour." << endl;
 			}
 			if(i <  this->BOARD_HEIGHT - 1){
 				board[i][k]->setBottomNeighbour(board[i + 1][k]);
-				cout << "board[" << i << "][" << k << "] -- has a BottomNeighbour." << endl;
+				//cout << "board[" << i << "][" << k << "] -- has a BottomNeighbour." << endl;
 			}
 			if(k > 0){
 				board[i][k]->setLeftNeighbour(board[i][k - 1]);
-				cout << "board[" << i << "][" << k << "] -- has a LeftNeighbour." << endl;
+				//cout << "board[" << i << "][" << k << "] -- has a LeftNeighbour." << endl;
 			}
 		}
 	}
@@ -132,6 +132,41 @@ bool Board::isGoalState()
 	return true;
 }
 
+int Board::heuristic1()
+{
+	int value = 0;
+	if(this->isGoalState()){
+		return 0;
+	}
+
+	for(int col = 0; col <  this->BOARD_WIDTH; col++)
+	{
+		if(board[0][col]->getColour() != board[this->BOARD_HEIGHT-1][col]->getColour())
+		{
+			value++;
+		}
+	}
+	return value;
+}
+
+int Board::heuristic2()
+{
+	//Under construction!
+	int value = 0;
+	if(this->isGoalState()){
+		return 0;
+	}
+
+	for(int col = 0; col <  this->BOARD_WIDTH; col++)
+	{
+		if(board[0][col]->getColour() != board[this->BOARD_HEIGHT-1][col]->getColour())
+		{
+			value++;
+		}
+	}
+	return value;
+}
+
 //Draw the current board.
 void Board::drawBoard()
 {
@@ -160,4 +195,18 @@ void Board::writeToOutput(std::ofstream &output)
 		this->totalMoves++;
 	}
 
+}
+
+string Board::toString()
+{
+	string str = "";
+	for(int i = 0; i < this->BOARD_HEIGHT; i++)
+	{
+		for(int k = 0; k < this->BOARD_WIDTH; k++)
+		{
+			str += board[i][k]->getColour();
+		}
+	}
+
+	return str;
 }

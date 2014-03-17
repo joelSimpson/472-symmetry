@@ -12,6 +12,8 @@ public:
 	Board(string);
 	void drawBoard();
 	void writeToOutput(ofstream &);
+	int Board::heuristic1();
+	int Board::heuristic2();
 
 	static const int BOARD_HEIGHT = 3;
 	static const int BOARD_WIDTH = 5;
@@ -25,6 +27,8 @@ public:
 	bool moveDown();
 	bool moveLeft();
 	bool isGoalState();
+
+	string toString();
 	
 private:
 	int getState();	//return an integer value of what it's state might be in?  I dunno

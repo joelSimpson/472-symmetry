@@ -1,5 +1,6 @@
 #include "brick.h"
 #include "board.h"
+#include "node.h"
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -28,6 +29,23 @@ int main(int argc, char* argv[]) {
 
 			ofstream output(OUTPUT_FILE);
 			board->drawBoard();
+			cout << "\n\nRoot of tree\n\n";
+			Node *treeRoot = new Node(board);
+			treeRoot->generateTree(1, 3);
+			treeRoot->data->drawBoard();
+
+			for(vector<Node*>::iterator currentNode = treeRoot->children.begin(); currentNode != treeRoot->children.end(); currentNode++)
+			{
+				cout << "\nChildren in level 1\n";
+
+				(*currentNode)->data->drawBoard();
+
+				for(vector<Node*>::iterator currentNode2 = (*currentNode)->children.begin(); currentNode2 != (*currentNode)->children.end(); currentNode2++)
+				{
+					cout << "\nChildren in level 2\n";
+					(*currentNode2)->data->drawBoard();
+				}
+			} 
 
 			//Start Timer
 			std::clock_t start;
@@ -41,6 +59,8 @@ int main(int argc, char* argv[]) {
 			duration = ( std::clock() - start );
 			output << "Time taken to solve: " << duration << "ms.\n";
 			output << board->totalMoves << " total moves taken to solve puzzle.\n";
+
+
 			//TODO: Move the close outside the while for a complete read of file
 			input.close();//Force close reading so we only read first line.. for now.
 			output.close();
