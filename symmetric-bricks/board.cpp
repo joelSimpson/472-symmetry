@@ -143,7 +143,7 @@ int Board::heuristic1()
 	{
 		if(board[0][col]->getColour() != board[this->BOARD_HEIGHT-1][col]->getColour())
 		{
-			value++;
+			value+=5;
 		}
 	}
 	return value;
@@ -158,16 +158,26 @@ int Board::heuristic2()
 
 	for(int col = 0; col <  this->BOARD_WIDTH; col++)
 	{
-		if(board[0][col]->getColour() != board[this->BOARD_HEIGHT-1][col]->getColour())
+		char top = board[0][col]->getColour();
+		char bottom = board[this->BOARD_HEIGHT-1][col]->getColour();
+		/*		
+		if(top == 'e')
+		{
+			value += 4;
+			value += findClosestSameColourBrick(this->BOARD_HEIGHT-1, col);
+		}
+		else if(bottom == 'e')
+		{
+			value += 4;
+			value += findClosestSameColourBrick(0, col);
+		}*/
+		if(top != bottom)
 		{
 			value += 5;
 			value += findClosestSameColourBrick(0, col);
+			value += findClosestSameColourBrick(this->BOARD_HEIGHT-1, col);
 			//value += getDistanceOfEmptyToCoord(this->BOARD_HEIGHT-1, col);
 			//value += getDistanceOfEmptyToCoord(0, col);
-		}
-		else
-		{
-			//value -= 1;
 		}
 	}
 	return value;

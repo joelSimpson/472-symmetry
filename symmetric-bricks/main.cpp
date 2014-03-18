@@ -11,7 +11,7 @@
 
 using namespace std;
 
-const string file1 = "../test1";
+const string file1 = "../test2";
 const string OUTPUT_FILE = "../OUTPUT.txt";
 const int heuristic = 2;
 
@@ -39,13 +39,14 @@ int main(int argc, char* argv[]) {
 			Board *board = new Board(inputString);
 			Node *treeRoot = new Node(board, heuristic);
 			vector<Node*> optimal_path = a_star(treeRoot);
-
+			//Remove initial board
+			optimal_path.back();
 			Node *currentNode = NULL;
 			string move_sequence = "";
 			int initial_size = optimal_path.size();
 			total_steps += initial_size;
 
-			//Print the moves
+			//Print the movesg
 			for (int i = 0; i < initial_size; i++)
 			{
 				currentNode = optimal_path.back();
@@ -72,6 +73,7 @@ int main(int argc, char* argv[]) {
 			//Prompt for moving
 			//menuMove(board, output);
 			lastTime = std::clock() - start;
+			//system("pause");
 		}
 		input.close();
 		
