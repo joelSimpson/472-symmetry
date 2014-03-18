@@ -14,8 +14,9 @@ public:
 	void writeToOutput(ofstream &);
 	int heuristic1();
 	int heuristic2();
+	char getEmptyPositionLetter();
+	int getDistanceOfEmptyToCoord(int x, int y);
 	int findClosestSameColourBrick(int x, int y);
-
 	static const int BOARD_HEIGHT = 3;
 	static const int BOARD_WIDTH = 5;
 	int totalMoves;

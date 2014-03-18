@@ -10,16 +10,15 @@ class Node
 {
 	public:
 		Node();
-		Node(Board*);
+		Node(Board*, int);
 
 		Board *data;
 		vector<Node*> children;
 		Node *parent;
 		int g_cost_so_far;
 		int h_cost;
+		int heuristic;
 
-		int getHeuristic1();
-		int getHeuristic2();
 		void generateChildrens();
 		void generateTree(int currentDepth, int depth);
 };

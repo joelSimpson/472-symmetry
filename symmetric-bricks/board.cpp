@@ -5,7 +5,6 @@
 #include <fstream>
 #include <limits>
 
-
 using namespace std;
 
 
@@ -152,7 +151,6 @@ int Board::heuristic1()
 
 int Board::heuristic2()
 {
-	//Under construction!
 	int value = 0;
 	if(this->isGoalState()){
 		return 0;
@@ -162,11 +160,52 @@ int Board::heuristic2()
 	{
 		if(board[0][col]->getColour() != board[this->BOARD_HEIGHT-1][col]->getColour())
 		{
-			value += 2;
-			value += findClosestSameColourBrick(this->BOARD_HEIGHT-1, col);
+			value += 5;
+			value += findClosestSameColourBrick(0, col);
+			//value += getDistanceOfEmptyToCoord(this->BOARD_HEIGHT-1, col);
+			//value += getDistanceOfEmptyToCoord(0, col);
+		}
+		else
+		{
+			//value -= 1;
 		}
 	}
 	return value;
+}
+
+char Board::getEmptyPositionLetter()
+{
+	int shortest = numeric_limits<int>::max();
+	for(int col = 0; col <  this->BOARD_WIDTH; col++)
+	{
+		for(int row = 0; row <  this->BOARD_HEIGHT; row++)
+		{
+			if(board[row][col]->getColour() == 'e')
+			{
+				return 'A' + (row * 5 + col);
+			}
+		}
+	}
+	return shortest;
+}
+
+int Board::getDistanceOfEmptyToCoord(int x, int y)
+{
+	int shortest = numeric_limits<int>::max();
+	for(int col = 0; col <  this->BOARD_WIDTH; col++)
+	{
+		for(int row = 0; row <  this->BOARD_HEIGHT; row++)
+		{
+			if(board[row][col]->getColour() == 'e')
+			{
+				int dist = pow((double)(y - col), 2) + pow((double)(x - row), 2);
+				if(shortest > dist){
+					shortest = dist;
+				}
+			}
+		}
+	}
+	return shortest;
 }
 
 int Board::findClosestSameColourBrick(int x, int y)
@@ -178,8 +217,9 @@ int Board::findClosestSameColourBrick(int x, int y)
 		{
 			if(board[row][col]->getColour() == board[x][y]->getColour())//Same color as one we're looking for?
 			{
-				if(shortest > abs( sqrt(y - col) + sqrt(x - row))){
-					shortest = abs( sqrt(y - col) + sqrt(x - row));
+				int dist = pow((double)(y - col), 2) + pow((double)(x - row), 2);
+				if(shortest > dist){
+					shortest = dist;
 				}
 			}
 		}

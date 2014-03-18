@@ -7,24 +7,29 @@ Node::Node()
 	parent = NULL;
 	g_cost_so_far = 0;
 	h_cost = 0;
+	heuristic = 0;
 }
 
-Node::Node(Board *currentBoard)
+Node::Node(Board *currentBoard, int heuristic)
 {
 	data = currentBoard;
 	parent = NULL;
 	g_cost_so_far = 0;
-	h_cost = 0;
-}
 
-int Node::getHeuristic1()
-{
-	return this->data->heuristic1();
-}
+	this->heuristic = heuristic;
 
-int Node::getHeuristic2()
-{
-	return this->data->heuristic2();
+	switch (heuristic)
+	{
+		case 1:
+			h_cost = currentBoard->heuristic1();
+			break;
+		case 2:
+			h_cost = currentBoard->heuristic2();
+			break;
+		default:
+			h_cost = currentBoard->heuristic2();
+			break;
+	}
 }
 
 //Generate the possible moves as children
@@ -44,13 +49,13 @@ void Node::generateChildrens()
 
 		//Push only valid moves
 		if(up->moveUp() && lastMove.compare(up->toString()) != 0)
-			children.push_back(new Node(up));
+			children.push_back(new Node(up, heuristic));
 		if(right->moveRight() && lastMove.compare(right->toString()) != 0)
-			children.push_back(new Node(right));
+			children.push_back(new Node(right, heuristic));
 		if(left->moveLeft() && lastMove.compare(left->toString()) != 0)
-			children.push_back(new Node(left));
+			children.push_back(new Node(left, heuristic));
 		if(down->moveDown() && lastMove.compare(down->toString()) != 0)
-			children.push_back(new Node(down));
+			children.push_back(new Node(down, heuristic));
 
 		for (int i = 0; i < children.size(); i++)
 		{
