@@ -11,9 +11,9 @@
 
 using namespace std;
 
-const string file1 = "../test2";
-const string OUTPUT_FILE = "../OUTPUT.txt";
-const int heuristic = 2;
+const string file1 = "../test4";
+const string OUTPUT_FILE = "../OUTPUT4.txt";
+const int heuristic = 3;
 
 void menuMove(Board* board, ofstream& output);
 vector<Node*> reconstruct_path(Node *node);
