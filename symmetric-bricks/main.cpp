@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
 				currentNode = optimal_path.back();
 				Board *currentBoard = currentNode->data;
 				char position = currentBoard->getEmptyPositionLetter();
-				cout << "\nMove #" << i;
+				/*cout << "\nMove #" << i;
 
 				if(i == initial_size - 1)
 				{
@@ -60,14 +60,14 @@ int main(int argc, char* argv[]) {
 				}
 				cout << " Position: " << position;
 				cout << "\n-----------------\n";
-				move_sequence += position;
-				currentNode->data->drawBoard();
+				*/move_sequence += position;
+				//currentNode->data->drawBoard();
 				optimal_path.pop_back();
 			}
 			double time = ( std::clock() - start - lastTime );
-			cout << "moves: " << move_sequence << "\n";
-			cout << "Time: " << time << " ms\n";
-			cout << "Steps: " << initial_size << "\n";
+			//cout << "moves: " << move_sequence << "\n";
+			//cout << "Time: " << time << " ms\n";
+			//cout << "Steps: " << initial_size << "\n";
 			output << move_sequence << "\n";
 			output << time << "ms\n";
 			//Prompt for moving
@@ -129,7 +129,7 @@ void menuMove(Board* board, std::ofstream& output)
 			cout << "This is a goal state!\n\n";
 		}
 		//Print board
-		board->drawBoard();
+		//board->drawBoard();
 
 		//save legal moves only
 		if(movement_status)
