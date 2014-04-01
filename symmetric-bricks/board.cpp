@@ -19,6 +19,7 @@ Board::Board(string colours)
 	this->reds = 0;
 	this->greens = 0;
 	this->yellows = 0;
+	this->purples = 0;
 
 	int count = 0;
 	for(int i = 0; i < this->BOARD_HEIGHT; i++)
@@ -42,6 +43,8 @@ Board::Board(string colours)
 				case 'g': this->greens++;
 					break;
 				case 'y': this->yellows++;
+					break;
+				case 'p': this->purples++;
 					break;
 			}
 			count++;
@@ -195,8 +198,8 @@ int Board::heuristic2()
 		if(top != bottom)
 		{
 			value += 5;
-			value += findClosestSameColourBrick(0, col);
-			value += findClosestSameColourBrick(this->BOARD_HEIGHT-1, col);
+			value += findClosestSameColourBrick(0, col, board[0][col]->getColour());
+			value += findClosestSameColourBrick(this->BOARD_HEIGHT-1, col, board[this->BOARD_HEIGHT-1][col]->getColour());
 			//value += getDistanceOfEmptyToCoord(this->BOARD_HEIGHT-1, col);
 			//value += getDistanceOfEmptyToCoord(0, col);
 		}
@@ -246,21 +249,30 @@ int Board::heuristic3()
 		return 0;
 	}
 
-	Brick* previous = emptyBrick;
+	vector<int> emptySpot = this->getEmptyBrickPosition();
+	if(emptySpot[0] != 1){
+		value +=1;
+	}
 
+	//Brick * previous = emptyBrick;
 	//More than half of the same colour can't be on the same row.
-	while(doesRowHaveMoreThanHalf(0) && doesRowHaveMoreThanHalf(2))
-	{
-		previous = this->makeRandomMove(previous);//We pass the previous postion to avoid going back to the same spot again.
-	}//Make random moves until less than half of all colours are not on the same top/bot row.
+	//if(doesRowHaveMoreThanHalf(0) || doesRowHaveMoreThanHalf(2))
+	//{
+		//previous = this->makeRandomMove(previous);//We pass the previous postion to avoid going back to the same spot again.
+	//}//Make random moves until less than half of all colours are not on the same top/bot row.
 
 	for(int col = 0; col <  this->BOARD_WIDTH; col++)
 	{
 		if(board[0][col]->getColour() != board[this->BOARD_HEIGHT-1][col]->getColour())
 		{
-			value += findClosestSameColourBrick(0, col);//Could use logic here to avoid aiming at same one multiple times.
+			value += findClosestSameColourBrick(0, col, board[this->BOARD_HEIGHT-1][col]->getColour());//Could use logic here to avoid aiming at same one multiple times.
+			value += getDistanceOfEmptyToCoord(0, col);
 		}
 	}
+
+	
+
+
 	return value;
 }
 
@@ -278,18 +290,19 @@ Brick* Board::makeRandomMove(Brick* previous)
 	return prev;
 }
 
-int* Board::getEmptyBrickPosition()
+vector<int> Board::getEmptyBrickPosition()
 {
 	int position[2];
 
-	for(int row = 0; row < BOARD_WIDTH; row++)
+	for(int row = 0; row < BOARD_HEIGHT; row++)
 	{
-		for(int col = 0; col < BOARD_HEIGHT; col++)
+		for(int col = 0; col < BOARD_WIDTH; col++)
 		{
 			if(this->board[row][col]->getColour() == 'e')
 			{
-				position[0] = row;
-				position[1] = col;
+				vector<int> position;
+				position.push_back(row);
+				position.push_back(col);
 				return position;
 			}
 		}
@@ -302,6 +315,7 @@ bool Board::doesRowHaveMoreThanHalf(int row)
 	int rowGreens = 0;
 	int rowBlues = 0;
 	int rowYellows = 0;
+	int rowPurples = 0;
 
 	for(int col = 0; col < this->BOARD_WIDTH; col++)
 	{
@@ -317,6 +331,8 @@ bool Board::doesRowHaveMoreThanHalf(int row)
 				break;
 			case 'y': rowYellows++;
 				break;
+			case 'p': rowPurples++;
+				break;
 		}
 	}
 
@@ -331,19 +347,23 @@ bool Board::doesRowHaveMoreThanHalf(int row)
 	}else if(rowYellows > yellows/2){
 		return true;
 	}
+	else if(rowPurples > purples/2){
+		return true;
+	}
 	return false;
 }
 
-int Board::findClosestSameColourBrick(int x, int y)
+int Board::findClosestSameColourBrick(int x, int y, char color)
 {
+	int dist = 6;//furtheset they can be.
 	int shortest = numeric_limits<int>::max(); //furthest away it can be.
 	for(int col = 0; col <  this->BOARD_WIDTH; col++)
 	{
 		for(int row = 0; row <  this->BOARD_HEIGHT; row++)
 		{
-			if(board[row][col]->getColour() == board[x][y]->getColour())//Same color as one we're looking for?
+			if(board[row][col]->getColour() == color)//Same color as one we're looking for?
 			{
-				int dist = pow((double)(y - col), 2) + pow((double)(x - row), 2);
+				dist = pow((double)(y - col), 2) + pow((double)(x - row), 2);
 				if(shortest > dist){
 					shortest = dist;
 				}

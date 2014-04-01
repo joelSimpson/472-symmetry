@@ -19,12 +19,12 @@ public:
 
 	char getEmptyPositionLetter();
 	int getDistanceOfEmptyToCoord(int x, int y);
-	int findClosestSameColourBrick(int x, int y);
+	int findClosestSameColourBrick(int x, int y, char color);
 	Brick* makeRandomMove(Brick* previous);
 	vector<Brick*> Board::getAvailableLegalMoves();
 	bool move(Brick* newPosition);
 	bool doesRowHaveMoreThanHalf(int row);
-	int* getEmptyBrickPosition();
+	vector<int> getEmptyBrickPosition();
 
 	static const int BOARD_HEIGHT = 3;
 	static const int BOARD_WIDTH = 5;
@@ -39,6 +39,7 @@ public:
 	int whites;
 	int greens;
 	int yellows;
+	int purples;
 
 	bool moveUp();
 	bool moveRight();

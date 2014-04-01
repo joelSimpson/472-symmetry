@@ -12,8 +12,8 @@
 using namespace std;
 
 const string file1 = "../test3";
-const string OUTPUT_FILE = "../OUTPUT.txt";
-const int heuristic = 2;
+const string OUTPUT_FILE = "../OUTPUT3.txt";
+const int heuristic = 3;
 
 void menuMove(Board* board, ofstream& output);
 vector<Node*> reconstruct_path(Node *node);
@@ -40,19 +40,19 @@ int main(int argc, char* argv[]) {
 			Node *treeRoot = new Node(board, heuristic);
 			vector<Node*> optimal_path = a_star(treeRoot);
 			//Remove initial board
-			optimal_path.back();
+			optimal_path.pop_back();
 			Node *currentNode = NULL;
 			string move_sequence = "";
 			int initial_size = optimal_path.size();
 			total_steps += initial_size;
 
-			//Print the movesg
+			//Print the moves
 			for (int i = 0; i < initial_size; i++)
 			{
 				currentNode = optimal_path.back();
 				Board *currentBoard = currentNode->data;
 				char position = currentBoard->getEmptyPositionLetter();
-				cout << "\nMove #" << i;
+				/*cout << "\nMove #" << i;
 
 				if(i == initial_size - 1)
 				{
@@ -60,14 +60,14 @@ int main(int argc, char* argv[]) {
 				}
 				cout << " Position: " << position;
 				cout << "\n-----------------\n";
-				move_sequence += position;
-				currentNode->data->drawBoard();
+				*/move_sequence += position;
+				//currentNode->data->drawBoard();
 				optimal_path.pop_back();
 			}
 			double time = ( std::clock() - start - lastTime );
-			cout << "moves: " << move_sequence << "\n";
-			cout << "Time: " << time << " ms\n";
-			cout << "Steps: " << initial_size << "\n";
+			//cout << "moves: " << move_sequence << "\n";
+			//cout << "Time: " << time << " ms\n";
+			//cout << "Steps: " << initial_size << "\n";
 			output << move_sequence << "\n";
 			output << time << "ms\n";
 			//Prompt for moving
@@ -129,7 +129,7 @@ void menuMove(Board* board, std::ofstream& output)
 			cout << "This is a goal state!\n\n";
 		}
 		//Print board
-		board->drawBoard();
+		//board->drawBoard();
 
 		//save legal moves only
 		if(movement_status)
