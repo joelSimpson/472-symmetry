@@ -11,7 +11,7 @@
 
 using namespace std;
 
-const string file1 = "../test2";
+const string file1 = "../test3";
 const string OUTPUT_FILE = "../OUTPUT.txt";
 const int heuristic = 2;
 
@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
 		cout << "Avg number of steps: " << total_steps / puzzle_count << "\n";
 		cout << "Avg solving time: " << lastTime / puzzle_count << " ms\n";
 		output << total_steps << "\n";
-		output << lastTime << "\n";
+		output << lastTime << "ms\n";
 		output.close();
 		
 	}else{

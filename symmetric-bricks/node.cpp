@@ -26,8 +26,11 @@ Node::Node(Board *currentBoard, int heuristic)
 		case 2:
 			h_cost = currentBoard->heuristic2();
 			break;
+		case 3:
+			h_cost = currentBoard->heuristic3();
+			break;
 		default:
-			h_cost = currentBoard->heuristic2();
+			h_cost = currentBoard->heuristic1();
 			break;
 	}
 }
